@@ -1,0 +1,29 @@
+name: TiMP
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: docker build -t my-debian-openssl .
+
+    - name: Run
+      run: docker run -v ${{ github.workspace }}/output:/output my-debian-openssl
+
+    - name: Archive
+      run: |
+        mkdir -p output
+        tar czf output/ciphers.tar.gz -C output ciphers.txt
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: ciphers
+        path: output/ciphers.tar.gz
