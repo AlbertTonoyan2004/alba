@@ -1,4 +1,4 @@
-name: TiMP
+name: timp
 
 on:
   push:
@@ -20,10 +20,10 @@ jobs:
     - name: Archive
       run: |
         mkdir -p output
-        tar czf output/ciphers.tar.gz -C output ciphers.txt
+        tar czf ${{ runner.temp }}/ciphers.tar.gz -C output ciphers.txt
 
     - name: Upload
       uses: actions/upload-artifact@v2
       with:
         name: ciphers
-        path: output/ciphers.tar.gz
+        path: ${{ runner.temp }}/ciphers.tar.gz
